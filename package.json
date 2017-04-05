@@ -12,9 +12,14 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "material-shadows": "^3.0.1",
+    "node-sass": "^4.5.2",
+    "react-scripts": "0.9.5",
+    "sass-material-colors": "^0.0.5"
   },
   "scripts": {
+    "build-css": "node-sass src/ -o src/",
+    "watch-css": "yarn build-css && node-sass --watch --recursive src/ -o src/",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

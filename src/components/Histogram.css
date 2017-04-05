@@ -1,22 +1,18 @@
 .histogram {
   height: 200px;
   display: flex;
-  flex-direction: column;
-}
+  flex-direction: column; }
 
 .histogram .bars {
   border: solid 1px black;
   height: 100%;
   display: flex;
-  align-items: flex-end;
-}
+  align-items: flex-end; }
 
 .histogram .bars > div {
   width: 100%;
-  background-color: black;
-}
+  background-color: black; }
 
 .histogram .labels {
   display: flex;
-  justify-content: space-between;
-}
+  justify-content: space-between; }

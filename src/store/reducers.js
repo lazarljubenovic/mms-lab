@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
 
-const maxUndoRedo = 10
+const maxUndoRedo = 5
 const fix = state => ({
   past: state.past.slice(-maxUndoRedo),
   present: state.present,
@@ -88,28 +88,30 @@ const showChannels = (state = false, action) => {
   }
 }
 
-const histogram = (state = null, action) => {
+const histograms = (state = null, action) => {
   switch (action.type) {
     case 'RECEIVE_HISTOGRAM':
       return action.payload
     case 'HIDE_HISTOGRAM':
+    case 'HIDE_CHANNELS':
       return null
     default:
       return state
   }
 }
 
-const showHistogram = (state = null, action) => {
+const showHistograms = (state = false, action) => {
   switch (action.type) {
     case 'REQUEST_HISTOGRAM':
       return true
     case 'HIDE_HISTOGRAM':
-      return null
+    case 'HIDE_CHANNELS':
+      return false
     default:
       return state
   }
 }
 
 export default combineReducers({
-  url, isLoading, channels, histogram, showChannels, showHistogram,
+  url, isLoading, channels, histograms, showChannels, showHistograms,
 })

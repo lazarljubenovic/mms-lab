@@ -1,0 +1,17 @@
+@import '../sass/utils';
+
+header {
+  background-color: material-color('blue-grey', '50');
+  @include z-depth-4dp;
+  display: flex;
+  padding: 1rem;
+  z-index: 10;
+
+  > * + * {
+    margin-left: 1rem;
+  }
+
+  button {
+    @include material-button;
+  }
+}

@@ -58,3 +58,6 @@ export const showHistograms = () => (dispatch, getState) => {
   const url = selectUrl(getState())
   transformer.histograms(url).then(x => dispatch(receiveHistogram(x)))
 }
+
+export const hideChannels = () => ({type: 'HIDE_CHANNELS' })
+export const hideHistograms = () => ({type: 'HIDE_HISTOGRAM'})

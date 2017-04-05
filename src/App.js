@@ -1,15 +1,23 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Toolbar from './components/Toolbar/index'
+import Toolbar from './components/Toolbar'
 import Picture from './components/Picture'
+import ViewSettings from './components/ViewSettings'
+import FilterList from './components/FilterList'
+import History from './components/History'
+import './App.css'
 
 const App = (state) =>
-  <div>
+  <div className="App">
     <Toolbar></Toolbar>
-    <main>
-      <Picture></Picture>
-    </main>
-    {/*<pre>Test: {String(JSON.stringify(state, null, 2))}</pre>*/}
+    <div className="wrapper">
+      <ViewSettings/>
+      <main>
+        <Picture/>
+        <History/>
+      </main>
+      <FilterList/>
+    </div>
   </div>
 
 const mapStateToProps = x => x

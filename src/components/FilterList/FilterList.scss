@@ -1,0 +1,49 @@
+@import '../../sass/utils';
+
+.FilterList {
+  padding: 1rem;
+
+  > * + * {
+    margin-top: 1rem;
+  }
+
+  > * {
+    border-radius: 3px;
+    padding: 1rem;
+    @include z-depth-2dp;
+
+    h1 {
+      margin: 0;
+      margin-bottom: 1rem;
+      font-size: 1.2em;
+    }
+
+    summary {
+      margin-bottom: .5rem;
+    }
+
+    div {
+      width: 100%;
+      display: flex;
+
+      > * + * {
+        margin-left: .2rem;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        @include material-input;
+      }
+
+      label {
+        width: 100%;
+      }
+    }
+
+    button {
+      @include material-button;
+      width: 100%;
+      margin-top: .25rem;
+    }
+  }
+}

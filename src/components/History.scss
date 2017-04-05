@@ -1,0 +1,49 @@
+.History {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ol {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+
+    > * + * {
+    }
+
+    li {
+      margin: 0;
+      padding: 0;
+      display: block;
+
+      &:not(:last-child) {
+        margin-right: .5rem;
+      }
+
+      img {
+        display: -webkit-flex;
+        display: -ms-flex;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        max-width: 100px;
+        max-height: 100px;
+      }
+    }
+
+    &.past, &.future {
+
+      img {
+        max-width: 70px;
+        max-height: 70px;
+      }
+    }
+
+    &.present {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+  }
+}

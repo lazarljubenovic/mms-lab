@@ -1,0 +1,70 @@
+@import 'imports';
+@import 'palette';
+
+@function contains($list, $item) {
+  @return index($list, $item) != null;
+}
+
+// flat, with-icon
+@mixin material-button($flags: ()) {
+  font-size: inherit;
+  outline: none;
+  border: none;
+  padding: .5em .8em;
+  cursor: pointer;
+  @include z-depth-2dp;
+  color: rgba(white, .92);
+  font-family: inherit;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 3px;
+  transition: all .2s ease;
+
+  &:hover {
+    @include z-depth-2dp;
+    color: white;
+  }
+
+  &:focus {
+    @include z-depth-4dp;
+    color: white;
+  }
+
+  &:disabled, &[disabled] {
+    background-color: material-color('blue-grey', '200');
+    color: rgba(white, .5);
+    cursor: not-allowed;
+  }
+
+  > span {
+    display: inline-block;
+    margin-left: .5em;
+  }
+
+  @if contains($flags, flat) {
+    background-color: white;
+  } @else {
+    background-color: material-color($color-primary-string);
+  }
+}
+
+@mixin material-input($flags: ()) {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  transition: all .33s ease;
+  border-bottom: solid 2px black;
+  box-shadow: 0 0 0 0 material-color($color-primary-string) inset;
+  text-align: right;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &:focus {
+    border-bottom: solid 2px material-color($color-primary-string);
+    box-shadow: 0 -1px 0 0 material-color($color-primary-string) inset;
+  }
+}
