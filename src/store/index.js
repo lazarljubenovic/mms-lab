@@ -4,6 +4,11 @@ import logger from 'redux-logger'
 import {reducer as form} from 'redux-form'
 import image from './reducers'
 
-export default createStore(
+const store = createStore(
   combineReducers({image, form}),
   applyMiddleware(thunk, logger))
+
+import * as actions from './actions'
+// store.dispatch(actions.showCie())
+
+export default store

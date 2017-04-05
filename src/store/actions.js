@@ -45,10 +45,10 @@ export const redo = () => (dispatch, getState) => {
   dispatch(updateChannelsAndHistograms(selectUrl(getState())))
 }
 
-export const showChannels = () => (dispatch, getState) => {
+export const showChannels = (fn = transformer.rgbChannels) => (dispatch, getState) => {
   dispatch(requestChannels())
   const url = selectUrl(getState())
-  transformer.rgbChannels(url).then(x => dispatch(receiveChannels(x)))
+  fn(url).then(x => dispatch(receiveChannels(x)))
 }
 
 export const showHistograms = () => (dispatch, getState) => {

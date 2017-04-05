@@ -16,25 +16,6 @@ const matrixTransform = (matrix, vector) => {
   return result
 }
 
-const CIE_TO_RGB_MATRIX = [
-  [3.240479, -1.537150, -0.498535],
-  [-0.969256, 1.875992, 0.041556],
-  [0.055648, -0.204043, 1.057311],
-]
-
-const RGB_TO_CIE_MATRIX = [
-  [0.412453, 0.357580, 0.180423],
-  [0.212671, 0.715160, 0.072169],
-  [0.019334, 0.119193, 0.950227],
-]
-
-export const cieToRgb = cieVector =>
-  matrixTransform(CIE_TO_RGB_MATRIX, cieVector).map(ensureValidChannel)
-
-export const rgbToCie = rgbVector =>
-  matrixTransform(RGB_TO_CIE_MATRIX, rgbVector.map(x => x / 255))
-    .map(x => x / 0.17697)
-
 function promisify(fn, ...params) {
   return new Promise((resolve, reject) => {
     fn(...params, (err, data) => {

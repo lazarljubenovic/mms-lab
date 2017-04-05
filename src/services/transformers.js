@@ -19,24 +19,6 @@ export const meanRemoval = (url, {size}) =>
   transform(url, image =>
     image.convolution(expandMatrix(convolutionMatrix, size)))
 
-export const cieChannel = (url, cieIndex) => transform(url, image => {
-  const {width: w, height: h} = image.bitmap
-  return image.scan(0, 0, w, h, (x, y, i) => {
-    const rgb = [
-      image.bitmap.data[i],
-      image.bitmap.data[i + 1],
-      image.bitmap.data[i + 2],
-    ]
-    const cie = rgbToCie(rgb)
-    let singleCieChannel = [0, 0, 0];
-    singleCieChannel[cieIndex] = cie[cieIndex]
-    const newRgb = cieToRgb(singleCieChannel)
-    image.bitmap.data[i] = newRgb[0]
-    image.bitmap.data[i + 1] = newRgb[1]
-    image.bitmap.data[i + 2] = newRgb[2]
-  })
-})
-
 const rgbChannel = (url, rgbIndex) => transform(url, image => {
   const {width: w, height: h} = image.bitmap
   return image.scan(0, 0, w, h, (x, y, i) => {
