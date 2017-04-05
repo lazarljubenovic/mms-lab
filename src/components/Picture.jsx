@@ -5,17 +5,19 @@ import './Picture.css'
 
 const Picture = props =>
   <div className="Picture">
-    <div>
+    <div className="main-picture-container">
       <img src={props.url} alt="current"/>
     </div>
+    <div className="channels">
     {
       props.c && props.channels && props.channels.map((channel, i) =>
-        <div key={i}>
+        <div key={i} className="channel">
           <img src={channel} alt="channel"/>
           {props.h && props.histograms && <Histogram {...props.histograms[i]}/>}
         </div>
       )
     }
+    </div>
   </div>
 
 const mapStateToProps = state => ({

@@ -2,6 +2,26 @@
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  .main-picture-container {
+    margin-bottom: 2.5rem;
+  }
+
+  .channels {
+    display: flex;
+
+    .channel {
+
+      &:not(:last-child) {
+        margin-right: 2rem;
+      }
+
+      img {
+        max-width: 180px;
+      }
+    }
+  }
 }

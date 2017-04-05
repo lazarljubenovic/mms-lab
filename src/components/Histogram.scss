@@ -1,5 +1,5 @@
-.histogram {
-  height: 200px;
+.Histogram {
+  height: 80px;
   display: flex;
   flex-direction: column;
 
@@ -11,12 +11,13 @@
 
     > div {
       width: 100%;
-      background-color: black;
+      background-color: rgba(black, .8);
     }
   }
 
   .labels {
     display: flex;
     justify-content: space-between;
+    color: rgba(black, .4);
   }
 }

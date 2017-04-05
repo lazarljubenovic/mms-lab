@@ -15,7 +15,7 @@ const requestHistogram = () => ({type: 'REQUEST_HISTOGRAM'})
 const receiveHistogram = payload => ({type: 'RECEIVE_HISTOGRAM', payload})
 
 const updateChannelsAndHistograms = (url) => (dispatch, getState) => {
-  const {showChannels: c, showHistogram: h} = selectImage(getState())
+  const {showChannels: c, showHistograms: h} = selectImage(getState())
   if (c) transformer.rgbChannels(url).then(x => dispatch(receiveChannels(x)))
   if (h) transformer.histograms(url).then(x => dispatch(receiveHistogram(x)))
 }
