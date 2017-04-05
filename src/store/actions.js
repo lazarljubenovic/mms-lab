@@ -6,8 +6,6 @@ const selectUrl = state => selectImage(state).url.present
 export const request = () => ({type: 'REQUEST'})
 const _receive = url => ({type: 'RECEIVE', url})
 
-export const load = request
-
 const requestChannels = () => ({type: 'REQUEST_CHANNELS'})
 const receiveChannels = payload => ({type: 'RECEIVE_CHANNELS', payload})
 

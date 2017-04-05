@@ -11,7 +11,7 @@ header {
     margin-left: 1rem;
   }
 
-  button {
+  > * {
     @include material-button;
   }
 }

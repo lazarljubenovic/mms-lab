@@ -1,5 +1,7 @@
+@import '../sass/utils';
+
 .History {
-  height: 120px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,7 +15,9 @@
     li {
       margin: 0;
       padding: 0;
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       &:not(:last-child) {
         margin-right: .5rem;
@@ -41,6 +45,7 @@
     &.present {
       margin-left: 1rem;
       margin-right: 1rem;
+      border: solid .33rem material-color($color-secondary-string);
     }
   }
 }
