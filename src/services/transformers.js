@@ -92,23 +92,25 @@ export const timeWrap = (url, {factor = 15}) => transform(url, image => {
   const [midX, midY] = [w / 2, h / 2]
   let theta, radius, newX, newY
   return image.scan(0, 0, w, h, (x, y, i) => {
-    let trueX = x - midX
-    let trueY = y - midY
-    theta = Math.atan2(trueY, trueX)
-    radius = Math.hypot(trueX, trueY)
-    const newRadius = Math.sqrt(radius) * factor
+    for (let j = 0; j < 3; j++) {
+      let trueX = x - midX
+      let trueY = y - midY
+      theta = Math.atan2(trueY, trueX)
+      radius = Math.hypot(trueX, trueY)
+      const newRadius = Math.sqrt(radius) * factor
 
-    newX = midX + (newRadius * Math.cos(theta))
-    if (newX > 0 && newX < w) {
-      image.bitmap.data = newX
-    } else {
-      image.bitmap.data = 0
-    }
-    newY = midY + (newRadius * Math.sin(theta))
-    if (newY > 0 && newY < h) {
-      image.bitmap.data = newY
-    } else {
-      image.bitmap.data = 0
+      newX = midX + (newRadius * Math.cos(theta))
+      if (newX > 0 && newX < w) {
+        image.bitmap.data[i + j] = newX
+      } else {
+        image.bitmap.data[i + j] = 0
+      }
+      newY = midY + (newRadius * Math.sin(theta))
+      if (newY > 0 && newY < h) {
+        image.bitmap.data[i + j] = newY
+      } else {
+        image.bitmap.data[i + j] = 0
+      }
     }
   })
 })
