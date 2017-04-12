@@ -45,7 +45,7 @@ const undoable = reducer => {
 }
 
 const PIC = 'http://i.imgur.com/bRawGXn.jpg'
-// const ICON = 'http://i.imgur.com/fQsiM9F.png'
+const ICON = 'http://i.imgur.com/fQsiM9F.png'
 const url = undoable((state = PIC, action) => {
   switch (action.type) {
     case 'RECEIVE':

@@ -1,4 +1,4 @@
-import {transform, extract, ensureValidChannel, expandMatrix, pixelAverage, rgbaToArr} from './util'
+import {transform, extract, ensureValidChannel, expandMatrix, pixelAverage, rgbaToArr, getBase64} from './util'
 
 export const invert = url => transform(url, image => image.invert())
 
@@ -133,7 +133,11 @@ const downsampleAllExcept = (url, {index}) => extract(url, image => {
         const square = []
         for (let q = 0; q < size; q++) {
           for (let w = 0; w < size; w++) {
-            square.push(image.getPixelColor(x + q, y + w))
+            try {
+              square.push(image.getPixelColor(x + w, y + q))
+            } catch (e) {
+              square.push(0)
+            }
           }
         }
         const avgData = pixelAverage(square, index)
@@ -144,14 +148,72 @@ const downsampleAllExcept = (url, {index}) => extract(url, image => {
     }
   }
   return {
-    width: w,
-    notDownsampled: index,
-    data,
+    w, // width
+    h, // height
+    i: index, // index of not downsampled channel
+    s: size, // side of square used for downsampling
+    d: data, // actual data, in three arrays. first one is not downsampled
   }
 })
+
+export const createImage = ({w: width, h: height, i: index, d: data, s: size}) => {
+  console.log('create image index', index)
+  return new Promise((resolve, reject) => {
+    new window.Jimp(width, height, (err, image) => {
+      if (err) return reject(err)
+      let block = -1
+      image.scan(0, 0, width, height, (y, x) => {
+        if (x % size === 0 && y % size === 0) {
+          block = block + 1
+          const downsampled1 = data[1][block]
+          const downsampled2 = data[2][block]
+          for (let n = 0; n < size ** 2; n++) {
+            const notDownsampled = data[0][block * (size ** 2) + n]
+            let r, g, b
+            switch (index) {
+              case 0:
+                ;[r, g, b] = [notDownsampled, downsampled1, downsampled2]
+                break
+              case 1:
+                ;[g, r, b] = [notDownsampled, downsampled1, downsampled2]
+                break
+              case 2:
+                ;[b, r, g] = [notDownsampled, downsampled1, downsampled2]
+                break
+              default:
+                throw new Error(`Please don't ever go here. Thanks. ${index}`)
+            }
+
+            const pixel = window.Jimp.rgbaToInt(r, g, b, 255)
+            const w = Math.floor(n / size)
+            const q = n % size
+            image.setPixelColor(pixel, x + q, y + w)
+          }
+        }
+      })
+      resolve(image)
+    })
+  })
+}
 
 export const downsamples = url => Promise.all([
   downsampleAllExcept(url, {index: 0}),
   downsampleAllExcept(url, {index: 1}),
   downsampleAllExcept(url, {index: 2}),
 ])
+  .then(data => {
+    return Promise.all([
+      data,
+      createImage(data[0]).then(getBase64),
+      createImage(data[1]).then(getBase64),
+      createImage(data[2]).then(getBase64),
+    ])
+  })
+  .then(x => {
+    const data = x[0]
+    const urls = x.slice(1)
+    return {
+      data,
+      urls,
+    }
+  })

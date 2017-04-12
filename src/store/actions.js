@@ -13,7 +13,7 @@ const requestHistogram = () => ({type: 'REQUEST_HISTOGRAM'})
 const receiveHistogram = payload => ({type: 'RECEIVE_HISTOGRAM', payload})
 
 const requestDownsamples = () => ({type: 'REQUEST_DOWNSAMPLES'})
-const receiveDownsamples = payload => ({type: 'RECEIVE_DOWNSAMPLES', payload})
+const receiveDownsamples = ({data, urls}) => ({type: 'RECEIVE_DOWNSAMPLES', payload: {data, urls}})
 
 const updateChannelsAndHistograms = (url) => (dispatch, getState) => {
   const {showChannels: c, showHistograms: h} = selectImage(getState())

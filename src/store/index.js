@@ -9,6 +9,6 @@ const store = createStore(
   applyMiddleware(thunk, logger))
 
 import * as actions from './actions'
-store.dispatch(actions.showDownsamples())
+// store.dispatch(actions.showDownsamples())
 
 export default store

@@ -20,10 +20,10 @@ const Picture = props =>
     </div>
     <div className="downsamples">
     {
-      props.d && props.downsamples && props.downsamples.map((downsample, i) =>
+      props.d && props.downsamples && props.downsamples.urls && props.downsamples.urls.map((downsample, i) =>
         <div key={i} className="downsample">
-          {/*<img src={downsample} alt={`downsample, version ${i + 1}`}/>*/}
-          <pre>{JSON.stringify(downsample, null, 2)}</pre>
+          <img src={downsample} alt={`downsample, version ${i + 1}`}/>
+          <a href={'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(props.downsamples.data[i]))} download>Download compressed</a>
         </div>
       )
     }

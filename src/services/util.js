@@ -26,7 +26,7 @@ function promisify(fn, ...params) {
 }
 
 const getBase64Callback = (image, cb) => image.getBase64(Jimp.MIME_JPEG, cb)
-const getBase64 = (...params) => promisify(getBase64Callback, ...params)
+export const getBase64 = (...params) => promisify(getBase64Callback, ...params)
 
 export const transform = (url, transformer) =>
   Jimp.read(url)
