@@ -6,6 +6,7 @@ import ColorFilter from './ColorFilter'
 import MeanRemoval from './MeanRemoval'
 import TimeWrap from './TimeWrap'
 import EdgeDetect from './EdgeDetect'
+import AverageChunks from './AverageChunks'
 import './FilterList.css'
 
 const FilterList = props =>
@@ -15,6 +16,7 @@ const FilterList = props =>
     <MeanRemoval initialValues={{size: "3"}} onSubmit={props.meanRemoval}/>
     <EdgeDetect onSubmit={props.edgeDetectHomogenity}/>
     <TimeWrap initialValues={{factor: 15}} onSubmit={props.timeWrap}/>
+    <AverageChunks initialValues={{k: 5}} onSubmit={props.averageChunks}/>
   </aside>
 
 const mapStateToProps = state => ({
@@ -27,6 +29,7 @@ const mapDispatchToProps = dispatch => ({
   meanRemoval: options => dispatch(action.meanRemoval(options)),
   edgeDetectHomogenity: () => dispatch(action.edgeDetectHomogenity()),
   timeWrap: options => dispatch(action.timeWrap(options)),
+  averageChunks: options => dispatch(action.averageChunks(options))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterList)

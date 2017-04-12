@@ -34,6 +34,7 @@ export const color = bindTransform(transformer.color)
 export const meanRemoval = bindTransform(transformer.meanRemoval)
 export const edgeDetectHomogenity = bindTransform(transformer.edgeDetectHomogenity)
 export const timeWrap = bindTransform(transformer.timeWrap)
+export const averageChunks = bindTransform(transformer.averageChunks)
 
 export const undo = () => (dispatch, getState) => {
   dispatch({type: 'UNDO'})

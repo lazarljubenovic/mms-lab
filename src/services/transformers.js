@@ -1,11 +1,12 @@
-import {transform, extract, rgbToCie, cieToRgb, ensureValidChannel, expandMatrix} from './util'
+import {transform, extract, rgbToCie, cieToRgb,
+  ensureValidChannel, expandMatrix} from './util'
 
 export const invert = url => transform(url, image => image.invert())
 
 export const color = (url, {r, g, b}) => transform(url, image => {
   r = +r ; g = +g ; b = +b
   if (typeof r !== 'number' || typeof g !== 'number' || typeof b !== 'number')
-    throw new Error(`For color, r/g/b must be numbers, given: ${r}, ${g}, ${b}`)
+    throw new Error(`RGB must be numbers, given: ${r}, ${g}, ${b}`)
   const {width: w, height: h} = image.bitmap
   return image.scan(0, 0, w, h, (x, y, i) => {
     image.bitmap.data[i] = ensureValidChannel(r + image.bitmap.data[i])
@@ -93,6 +94,33 @@ export const timeWrap = (url, {factor = 15}) => transform(url, image => {
       } else {
         image.bitmap.data[i + j] = 0
       }
+    }
+  })
+})
+
+const generateChunkMap = (total, k) => {
+  k = +k
+  const arr = []
+  let z = 0
+  for (let i = 0; i <= Math.ceil(total / k); i++) {
+    const start = i * k
+    const end = i * k + k - 1
+    const avg = Math.round((start + end) / 2)
+    for (let j = 0; j <= k; j++) {
+      arr[z++] = avg
+    }
+  }
+  const res = arr.slice(0, 256)
+  return res
+}
+const generateRgbChunkMap = generateChunkMap.bind(null, 255)
+
+export const averageChunks = (url, {k = 3}) => transform(url, image => {
+  const chunkMap = generateRgbChunkMap(k)
+  const {width: w, height: h} = image.bitmap
+  return image.scan(0, 0, w, h, (x, y, i) => {
+    for (let j = i; j < i + 3; j++) {
+      image.bitmap.data[j] = chunkMap[image.bitmap.data[j]]
     }
   })
 })
