@@ -3,19 +3,7 @@ import {splitToEqualParts, getProbabilities} from '../src/services/shannon-fano/
 const spawnSingle = probability => ({probability, name: 'x', sequence: ''})
 const spawn = arr => arr.map(spawnSingle)
 
-const PIC = 'http://i.imgur.com/bRawGXn.jpg'
-const ICON = 'http://i.imgur.com/fQsiM9F.png'
-
 describe(`Shannon Fano Utils`, () => {
-
-  xdescribe(`getProbabilities`, () => {
-
-    it(`should work for icon`, done => {
-      const probs = getProbabilities(ICON)
-      expect(probs).toEqual([])
-    })
-
-  })
 
   describe(`splitToEqualParts`, () => {
 
