@@ -45,7 +45,7 @@ const undoable = reducer => {
 }
 
 const PIC = 'http://i.imgur.com/bRawGXn.jpg'
-const ICON = 'http://i.imgur.com/fQsiM9F.png'
+// const ICON = 'http://i.imgur.com/fQsiM9F.png'
 const url = undoable((state = PIC, action) => {
   switch (action.type) {
     case 'RECEIVE':
@@ -112,6 +112,31 @@ const showHistograms = (state = false, action) => {
   }
 }
 
+const downsamples = (state = null, action) => {
+  switch (action.type) {
+    case 'RECEIVE_DOWNSAMPLES':
+      return action.payload
+    case 'HIDE_DOWNSAMPLES':
+      return null
+    default:
+      return state
+  }
+}
+
+const showDownsamples = (state = false, action) => {
+  switch (action.type) {
+    case 'REQUEST_DOWNSAMPLES':
+      return true
+    case 'HIDE_DOWNSAMPLES':
+      return false
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
-  url, isLoading, channels, histograms, showChannels, showHistograms,
+  url, isLoading,
+  channels, showChannels,
+  histograms, showHistograms,
+  downsamples, showDownsamples,
 })

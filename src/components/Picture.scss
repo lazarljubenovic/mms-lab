@@ -24,4 +24,15 @@
       }
     }
   }
+
+  .downsamples {
+    display: flex;
+
+    .downsample {
+
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+  }
 }

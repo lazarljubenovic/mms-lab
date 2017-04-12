@@ -3,18 +3,18 @@ const Jimp = window.Jimp
 const ensureBetween = (a, b, x) => Math.min(Math.max(a, x), b)
 export const ensureValidChannel = ensureBetween.bind(this, 0, 255)
 
-const matrixTransform = (matrix, vector) => {
-  const dim = vector.length
-  let result = []
-  for (let i = 0; i < dim; i++) {
-    let partialSum = 0
-    for (let j = 0; j < dim; j++) {
-      partialSum += matrix[i][j] * vector[j]
-    }
-    result[i] = partialSum
-  }
-  return result
-}
+// const matrixTransform = (matrix, vector) => {
+//   const dim = vector.length
+//   let result = []
+//   for (let i = 0; i < dim; i++) {
+//     let partialSum = 0
+//     for (let j = 0; j < dim; j++) {
+//       partialSum += matrix[i][j] * vector[j]
+//     }
+//     result[i] = partialSum
+//   }
+//   return result
+// }
 
 function promisify(fn, ...params) {
   return new Promise((resolve, reject) => {
@@ -63,4 +63,40 @@ export const expandMatrix = (matrix, size) => {
     ]
     default: throw new Error(`Cannot expand matrix to size ${size}.`)
   }
+}
+
+export const rgbaToArr = ({r, g, b, a}) => [r, g, b, a]
+
+export const getChannel = (pixel, i) => rgbaToArr(Jimp.intToRGBA(pixel))[i]
+
+export const setChannel = (pixel, index, value) => {
+  switch (index) {
+    case 0:
+      return (pixel & 0x00FFFFFF | (value << 24)) >>> 0
+    case 1:
+      return (pixel & 0xFF00FFFF | (value << 16)) >>> 0
+    case 2:
+      return (pixel & 0xFFFF00FF | (value << 8)) >>> 0
+    default:
+      throw new Error(`nope`)
+  }
+}
+
+const getAverage = (pixels, index) => {
+  let sum = 0
+  for (const pixel of pixels) {
+    const channel = getChannel(pixel, index)
+    sum += channel
+  }
+  return Math.round(sum / pixels.length)
+}
+
+export const pixelAverage = (pixels, notDownsampled) => {
+  const data = [pixels.map(pixel => getChannel(pixel, notDownsampled))]
+  for (let i = 0; i < 3; i++) {
+    if (i === notDownsampled) continue
+    const avg = getAverage(pixels, i)
+    data.push([avg])
+  }
+  return data
 }

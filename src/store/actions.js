@@ -12,6 +12,9 @@ const receiveChannels = payload => ({type: 'RECEIVE_CHANNELS', payload})
 const requestHistogram = () => ({type: 'REQUEST_HISTOGRAM'})
 const receiveHistogram = payload => ({type: 'RECEIVE_HISTOGRAM', payload})
 
+const requestDownsamples = () => ({type: 'REQUEST_DOWNSAMPLES'})
+const receiveDownsamples = payload => ({type: 'RECEIVE_DOWNSAMPLES', payload})
+
 const updateChannelsAndHistograms = (url) => (dispatch, getState) => {
   const {showChannels: c, showHistograms: h} = selectImage(getState())
   if (c) transformer.rgbChannels(url).then(x => dispatch(receiveChannels(x)))
@@ -58,5 +61,12 @@ export const showHistograms = () => (dispatch, getState) => {
   transformer.histograms(url).then(x => dispatch(receiveHistogram(x)))
 }
 
+export const showDownsamples = () => (dispatch, getState) => {
+  dispatch(requestDownsamples())
+  const url = selectUrl(getState())
+  transformer.downsamples(url).then(x => dispatch(receiveDownsamples(x)))
+}
+
 export const hideChannels = () => ({type: 'HIDE_CHANNELS' })
 export const hideHistograms = () => ({type: 'HIDE_HISTOGRAM'})
+export const hideDownsamples = () => ({type: 'HIDE_DOWNSAMPLES'})

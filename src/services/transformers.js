@@ -1,5 +1,4 @@
-import {transform, extract, rgbToCie, cieToRgb,
-  ensureValidChannel, expandMatrix} from './util'
+import {transform, extract, ensureValidChannel, expandMatrix, pixelAverage, rgbaToArr} from './util'
 
 export const invert = url => transform(url, image => image.invert())
 
@@ -49,7 +48,6 @@ export const histograms = url => Promise.all([
   histogram(url, 0), histogram(url, 1), histogram(url, 2),
 ])
 
-const rgbaToArr = ({r, g, b, a}) => [r, g, b, a]
 export const edgeDetectHomogenity = url => transform(url, image => {
   const {width: w, height: h} = image.bitmap
   const newImage = image.clone()
@@ -124,3 +122,36 @@ export const averageChunks = (url, {k = 3}) => transform(url, image => {
     }
   })
 })
+
+const downsampleAllExcept = (url, {index}) => extract(url, image => {
+  const {width: w, height: h} = image.bitmap
+  let data = [[], [], []]
+  const size = 100
+  for (let x = 0; x < w; x++) {
+    for (let y = 0; y < h; y++) {
+      if (x % size === 0 && y % size === 0) {
+        const square = []
+        for (let q = 0; q < size; q++) {
+          for (let w = 0; w < size; w++) {
+            square.push(image.getPixelColor(x + q, y + w))
+          }
+        }
+        const avgData = pixelAverage(square, index)
+        data[0] = [...data[0], ...avgData[0]]
+        data[1] = [...data[1], ...avgData[1]]
+        data[2] = [...data[2], ...avgData[2]]
+      }
+    }
+  }
+  return {
+    width: w,
+    notDownsampled: index,
+    data,
+  }
+})
+
+export const downsamples = url => Promise.all([
+  downsampleAllExcept(url, {index: 0}),
+  downsampleAllExcept(url, {index: 1}),
+  downsampleAllExcept(url, {index: 2}),
+])

@@ -18,6 +18,16 @@ const Picture = props =>
       )
     }
     </div>
+    <div className="downsamples">
+    {
+      props.d && props.downsamples && props.downsamples.map((downsample, i) =>
+        <div key={i} className="downsample">
+          {/*<img src={downsample} alt={`downsample, version ${i + 1}`}/>*/}
+          <pre>{JSON.stringify(downsample, null, 2)}</pre>
+        </div>
+      )
+    }
+    </div>
   </div>
 
 const mapStateToProps = state => ({
@@ -26,6 +36,8 @@ const mapStateToProps = state => ({
   channels: state.image.channels,
   h: state.image.showHistograms,
   histograms: state.image.histograms,
+  d: state.image.showDownsamples,
+  downsamples: state.image.downsamples,
 })
 
 export default connect(mapStateToProps)(Picture)
