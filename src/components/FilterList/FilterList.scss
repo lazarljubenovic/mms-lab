@@ -1,6 +1,7 @@
 @import '../../sass/utils';
 
 .FilterList {
+  overflow-y: auto;
   padding: 1rem;
 
   > * + * {

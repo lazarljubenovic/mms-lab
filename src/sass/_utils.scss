@@ -13,12 +13,13 @@
   padding: .5em .8em;
   cursor: pointer;
   @include z-depth-2dp;
-  color: rgba(white, .92);
   font-family: inherit;
   text-transform: uppercase;
   font-weight: bold;
   border-radius: 3px;
   transition: all .2s ease;
+  text-align: center;
+  text-decoration: none;
 
   &:hover {
     @include z-depth-2dp;
@@ -43,8 +44,10 @@
 
   @if contains($flags, flat) {
     background-color: white;
+    color: $color-primary-string;
   } @else {
     background-color: material-color($color-primary-string);
+    color: rgba(white, .92);
   }
 }
 
