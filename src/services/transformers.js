@@ -159,7 +159,6 @@ const downsampleAllExcept = (url, {index}) => extract(url, image => {
     }))
   const dictionary = shannonFano(probs).map(x => [x.name, x.sequence])
   data = data.map(arr => arr.map(el => dictionary.find(d => d[0] === el)[1]))
-  console.log(data)
   return {
     w, // width
     h, // height
@@ -170,8 +169,11 @@ const downsampleAllExcept = (url, {index}) => extract(url, image => {
   }
 })
 
+const decodeData = (dictionary, data) => {
+  return data.map(arr => arr.map(el => dictionary.find(d => d[1] === el)[0]))
+}
 export const createImage = ({w: width, h: height, i: index, d: data, s: size, y: dictionary}) => {
-  data = data.map(arr => arr.map(el => dictionary.find(d => d[1] === el)[0]))
+  data = decodeData(dictionary, data)
   return new Promise((resolve, reject) => {
     new window.Jimp(width, height, (err, image) => {
       if (err) return reject(err)
@@ -197,7 +199,6 @@ export const createImage = ({w: width, h: height, i: index, d: data, s: size, y:
               default:
                 throw new Error(`Please don't ever go here. Thanks. ${index}`)
             }
-
             const pixel = window.Jimp.rgbaToInt(r, g, b, 255)
             const w = Math.floor(n / size)
             const q = n % size
