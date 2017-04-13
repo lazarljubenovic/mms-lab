@@ -1,4 +1,5 @@
 import {transform, extract, ensureValidChannel, expandMatrix, pixelAverage, rgbaToArr, getBase64} from './util'
+import shannonFano from './shannon-fano'
 
 export const invert = url => transform(url, image => image.invert())
 
@@ -125,10 +126,13 @@ export const averageChunks = (url, {k = 3}) => transform(url, image => {
 
 const downsampleAllExcept = (url, {index}) => extract(url, image => {
   const {width: w, height: h} = image.bitmap
+  let probs = Array(256).fill(0)
   let data = [[], [], []]
   const size = 100
   for (let x = 0; x < w; x++) {
     for (let y = 0; y < h; y++) {
+      const rgba = rgbaToArr(window.Jimp.intToRGBA(image.getPixelColor(x, y)))
+      probs[rgba[0]] += 1 ; probs[rgba[1]] += 1 ; probs[rgba[2]] += 1
       if (x % size === 0 && y % size === 0) {
         const square = []
         for (let q = 0; q < size; q++) {
@@ -147,17 +151,27 @@ const downsampleAllExcept = (url, {index}) => extract(url, image => {
       }
     }
   }
+  probs = probs.map(x => x / (w * h))
+    .map((probability, name) => ({
+      name,
+      probability,
+      sequence: '',
+    }))
+  const dictionary = shannonFano(probs).map(x => [x.name, x.sequence])
+  data = data.map(arr => arr.map(el => dictionary.find(d => d[0] === el)[1]))
+  console.log(data)
   return {
     w, // width
     h, // height
     i: index, // index of not downsampled channel
     s: size, // side of square used for downsampling
     d: data, // actual data, in three arrays. first one is not downsampled
+    y: dictionary, // dictionary for later decoding
   }
 })
 
-export const createImage = ({w: width, h: height, i: index, d: data, s: size}) => {
-  console.log('create image index', index)
+export const createImage = ({w: width, h: height, i: index, d: data, s: size, y: dictionary}) => {
+  data = data.map(arr => arr.map(el => dictionary.find(d => d[1] === el)[0]))
   return new Promise((resolve, reject) => {
     new window.Jimp(width, height, (err, image) => {
       if (err) return reject(err)

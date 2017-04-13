@@ -16,7 +16,7 @@ export const getProbabilities = url => histograms(url)
     return probs.map((probability, name) => ({name, probability, sequence: ''}))
   })
 
-export const sort = arr => arr.sort((a, b) => a.probability < b.probability ? -1 : 1)
+export const sort = arr => arr.sort((a, b) => a.probability < b.probability ? 1 : -1)
 
 export const splitToEqualParts = (arr, compare = x => x.probability) => {
   if (arr.length <= 1) return null
